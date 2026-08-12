@@ -15,3 +15,14 @@ export const PatientRegistrationZodSchema =  z.object({
 		contactNumber: z.string().optional()
 	}).optional()
 })
+
+export const LoginZodSchema = z.object({
+    email:z.email(),
+    password:z.string()
+	.min(6, "Password must be at least 6 characters")
+  	.regex(/[A-Z]/,"Password must contain 1 uppercase character")
+  	.regex(/[a-z]/,"Password must contain 1 lowercase character")
+  	.regex(/[0-9]/,"Password must contain 1 numerical character")
+  	.regex(/[^A-Za-z0-9]/,"Password must contain 1 special character")
+	
+})

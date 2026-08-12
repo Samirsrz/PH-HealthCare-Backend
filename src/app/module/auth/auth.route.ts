@@ -1,12 +1,16 @@
-import { Router } from "express";
+import { NextFunction, Request, Response, Router } from "express";
 import { Role } from "../../../generated/prisma/enums";
 import { auth } from "../../middleware/checkAuth";
 import { AuthController } from "./auth.controller";
+import { LoginZodSchema, PatientRegistrationZodSchema } from "./auth.validation";
+import { catchAsync } from "../../utils/catchAsync";
+import z from "zod";
+import { validateRequest } from "../../middleware/validateRequest";
 
 const router = Router();
 
-router.post("/register", AuthController.registerPatient);
-router.post("/login", AuthController.loginUser);
+router.post("/register",validateRequest(PatientRegistrationZodSchema), AuthController.registerPatient);
+router.post("/login",validateRequest(LoginZodSchema), AuthController.loginUser);
 router.get(
 	"/me",
 	auth(Role.ADMIN, Role.DOCTOR, Role.PATIENT, Role.SUPER_ADMIN),
