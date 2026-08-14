@@ -14,6 +14,10 @@ export const PatientRegistrationZodSchema =  z.object({
 		contactNumber: z.string().optional()
 	}).optional()
 })
+export const PatientEmailVerifiedZodSchema =  z.object({
+	email:z.string(),
+	opt:z.string().length(6)
+})
 
 export const LoginZodSchema = z.object({
     email:z.email(),
