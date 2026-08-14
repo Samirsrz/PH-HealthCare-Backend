@@ -155,6 +155,43 @@ const googleLogin = catchAsync(async (req: Request, res: Response) => {
 
 
 
+const forgotPassword = catchAsync(async (req: Request, res: Response) => {
+	
+   const payload = req.body;
+
+	await AuthService.forgotPasswordDB(payload)
+
+	sendResponse(res, {
+		statusCode: httpStatus.OK,
+		success: true,
+		message: `OTP send to : ${payload.email}`,
+		data:null,
+	});
+});
+
+
+
+
+
+const resetPassword = catchAsync(async (req: Request, res: Response) => {
+	
+    const payload = req.body;
+
+	 await AuthService.resetPasswordDB(payload)
+
+	sendResponse(res, {
+		statusCode: httpStatus.OK,
+		success: true,
+		message: "Password updated successfully",
+		data: null,
+	});
+});
+
+
+
+
+
+
 
 
 export const AuthController = {
@@ -162,5 +199,7 @@ export const AuthController = {
 	loginUser,
 	getMe,
 	refreshToken,
-	googleLogin
+	googleLogin,
+	forgotPassword,
+	resetPassword
 };
