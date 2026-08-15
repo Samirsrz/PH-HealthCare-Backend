@@ -66,6 +66,7 @@ const registerPatient = async (payload: IRegisterPatientPayload) => {
 		}
 	  })
 
+	//   Sending Mail PART
 	  const templatePath = path.join(process.cwd(),"src/app/templates/registrationOTP.ejs")
       const html = await ejs.renderFile(templatePath,{
 		name,
@@ -192,8 +193,23 @@ const verifyPatientEmailDB = async(payload:IVerifyEmailPayload)=>{
 		omit: { password: true },
 		include: { patient: true },
 	});
-	
+
      await redisClient.del(patientRegistrationKey)
+//   Sending Mail PART
+	  const templatePath = path.join(process.cwd(),"src/app/templates/patient-welcome-email.ejs")
+      const html = await ejs.renderFile(templatePath,{
+		name: createdUser.name,
+		
+	  },{cache:false})
+
+    await transporter.sendMail({
+		from:config.smtp_user,
+		to: email,
+		subject:"Welcome to PH HealthCare ",
+		// text:`Your otp is ${otp}`
+		html
+	})
+
 
 	const { patient, ...user } = createdUser;
 	const jwtPayload = {
@@ -441,6 +457,22 @@ const googleLoginDB = async (payload: IGoogleLoginPayload) => {
           },
         },
       });
+
+  const templatePath = path.join(process.cwd(),"src/app/templates/patient-welcome-email.ejs")
+      const html = await ejs.renderFile(templatePath,{
+		name: user.name,
+		
+	  },{cache:false})
+
+    await transporter.sendMail({
+		from:config.smtp_user,
+		to: user.email,
+		subject:"Welcome to PH HealthCare ",
+		html
+	})
+
+
+
     }
   }
 
