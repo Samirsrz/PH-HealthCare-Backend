@@ -14,6 +14,8 @@ import { AuthRoutes } from "./app/module/auth/auth.route";
 import z, { email } from "zod";
 import { redisClient } from "./app/lib/redis";
 import { UserRoutes } from "./app/module/user/user.route";
+import { getBkashIdToken } from "./app/lib/bkash";
+import { AppointmentRoutes } from "./app/module/appointment/appointment.route";
 
 const app: Application = express();
 
@@ -34,16 +36,15 @@ app.use(cookieParser());
 app.use("/api/v1/auth", AuthRoutes);
 app.use("/api/v1/user",UserRoutes)
 
+app.use("/api/v1/appointment",AppointmentRoutes)
+
 app.get("/test",async (req: Request, res: Response,next:NextFunction) => {
 
    try {
-	
-      await redisClient.set("forgot-password-otp:patient1@gmail.com","123456",{
-		expiration:{
-			type:"EX",
-			value:60
-		}
-	  })
+
+    
+	 const grantIdTokenResult = await getBkashIdToken()
+	 console.log(grantIdTokenResult);  
 
 	res.status(httpStatus.OK).json({
 		success: true,
