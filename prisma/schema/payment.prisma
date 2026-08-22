@@ -15,7 +15,7 @@ model Payment {
 
     gatewayResponse       Json?  //bkash er whole data response jeta pabo
     refundTrxId           String?
-    refundAmount          Decimal @db.Decimal()
+    refundAmount          Decimal? @db.Decimal()
     refundReason          String?
     refundedAt            String?
     
