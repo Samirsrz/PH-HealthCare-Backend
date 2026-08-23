@@ -38,27 +38,32 @@ app.use("/api/v1/user",UserRoutes)
 
 app.use("/api/v1/appointment",AppointmentRoutes)
 
-app.get("/test",async (req: Request, res: Response,next:NextFunction) => {
 
-   try {
+
+// app.get("/test",async (req: Request, res: Response,next:NextFunction) => {
+
+//    try {
 
     
-	 const grantIdTokenResult = await getBkashIdToken()
-	 console.log(grantIdTokenResult);  
+// 	 const grantIdTokenResult = await getBkashIdToken()
+// 	 console.log(grantIdTokenResult);  
 
-	res.status(httpStatus.OK).json({
-		success: true,
-		message: "Welcome to PH Healthcare System Backend",
-		data:null
-	})
-   } catch (error) {
-	 console.log(error); 
-	next(error)
-   }
-})
+// 	res.status(httpStatus.OK).json({
+// 		success: true,
+// 		message: "Welcome to PH Healthcare System Backend",
+// 		data:null
+// 	})
+//    } catch (error) {
+// 	 console.log(error); 
+// 	next(error)
+//    }
+// })
 
 
 // Basic route
+
+
+
 app.get("/", async (req: Request, res: Response) => {
 	res.status(httpStatus.OK).json({
 		success: true,

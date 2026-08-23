@@ -245,10 +245,12 @@ const bookAppointmentCallbackDB = async (query: Record<string, any>) => {
 
 
 
-const cancelAppointmentDB = async(payload:any,user:RequestUser)=>{
-   
-    const appointmentId = payload.appointmentId
-    const existingAppointment = await prisma.appointment.findUnique({
+const cancelAppointmentDB = async(payload:any)=>{
+    
+  const transactionResult = await prisma.$transaction(async(tx)=>{
+       const appointmentId = payload.appointmentId
+
+    const existingAppointment = await tx.appointment.findUnique({
         where:{
             id:appointmentId
         },
@@ -269,7 +271,7 @@ const cancelAppointmentDB = async(payload:any,user:RequestUser)=>{
       throw new Error("Appointment Already Cancelled")
     }
 
-    const updatedAppointment = await prisma.appointment.update({
+    const updatedAppointment = await tx.appointment.update({
       where:{
         id:existingAppointment.id
       },
@@ -284,8 +286,10 @@ const cancelAppointmentDB = async(payload:any,user:RequestUser)=>{
       throw new Error("no bkash access token found");
     }
 
+    // const bkashSignature = crypto
+
    const bkashRefundPaymentResponse = await fetch(
-      `${config.bkash_base_url}/v2/tokenized-checkout/refund/payment/transaction`,
+      `${config.bkash_base_url}/tokenized/checkout/payment/refund`,
       {
         method: "POST",
         headers: {
@@ -295,24 +299,48 @@ const cancelAppointmentDB = async(payload:any,user:RequestUser)=>{
           "X-App-Key": config.bkash_app_key,
         },
         body: JSON.stringify({
-        paymentId:existingAppointment.payment?.bkashPaymentId,
-        trxId: "BFD90JRLST",
-        refundAmount: "1",
-        sku:"test",
-        reason: "test"
+        paymentID:existingAppointment.payment?.bkashPaymentId,
+        trxID: existingAppointment.payment?.bkashTrxId,
+        amount: existingAppointment.payment?.amount.toString(),
+        sku: "Appointment Cancellation",
+        reason: "Patient cancelled the appointment"
         }),
       },
     );
 
    const bkashRefundPaymentResult = await bkashRefundPaymentResponse.json();
-                        
+          
 
+  //  bkash theke refund er pore akhon DB te update korbo
+     const updatePayment = await tx.payment.update({
+      where:{
+            appointmentId:existingAppointment.id
+      },
+      data:{
+        refundTrxId: bkashRefundPaymentResult.refundTrxID,
+        refundedAt: bkashRefundPaymentResult.completedTime,
+        refundAmount: bkashRefundPaymentResult.amount,
+        refundReason:"Patient cancelled the appointment",
+        status:PaymentStatus.REFUNDED,
+        gatewayResponse: bkashRefundPaymentResult
+      }
+     })
+
+      return{
+        appointment: updatedAppointment,
+        payment: updatePayment
+      }
+
+  })
+  
+  return transactionResult
 }
 
 
 export const AppointmentServices = {
     bookAppointmentDB,
     bookAppointmentCallbackDB,
-    payAppointmentDB
+    payAppointmentDB,
+    cancelAppointmentDB
 }                                                                                                                           
 

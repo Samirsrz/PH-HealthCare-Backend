@@ -17,25 +17,29 @@ enum Gender {
   OTHER
 }
 
-
-enum AuthProvider{
+enum AuthProvider {
   GOOGLE
   CREDENTIAL
 }
 
-enum AppointmentStatus{
+enum AppointmentStatus {
   PENDING
   CONFIRMED
   CANCELLED
   ONGOING
   COMPLETED
-
 }
 
-enum PaymentStatus{
+enum PaymentStatus {
   UNPAID
   PAID
   FAILED
   CANCELLED
   REFUNDED
+}
+
+enum DoctorVerificationStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
