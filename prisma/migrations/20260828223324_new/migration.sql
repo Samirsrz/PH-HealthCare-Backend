@@ -37,13 +37,13 @@ CREATE TABLE "schedules" (
     "deletedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "doctodId" TEXT NOT NULL,
+    "doctorId" TEXT NOT NULL,
 
     CONSTRAINT "schedules_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "schedules_doctodId_startDateTime_endDateTime_key" ON "schedules"("doctodId", "startDateTime", "endDateTime");
+CREATE UNIQUE INDEX "schedules_doctorId_startDateTime_endDateTime_key" ON "schedules"("doctorId", "startDateTime", "endDateTime");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "appointments_patientId_doctorId_scheduleId_key" ON "appointments"("patientId", "doctorId", "scheduleId");
@@ -61,4 +61,4 @@ ALTER TABLE "appointments" ADD CONSTRAINT "appointments_doctorId_fkey" FOREIGN K
 ALTER TABLE "appointments" ADD CONSTRAINT "appointments_scheduleId_fkey" FOREIGN KEY ("scheduleId") REFERENCES "schedules"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "schedules" ADD CONSTRAINT "schedules_doctodId_fkey" FOREIGN KEY ("doctodId") REFERENCES "doctors"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "schedules" ADD CONSTRAINT "schedules_doctorId_fkey" FOREIGN KEY ("doctorId") REFERENCES "doctors"("id") ON DELETE CASCADE ON UPDATE CASCADE;
