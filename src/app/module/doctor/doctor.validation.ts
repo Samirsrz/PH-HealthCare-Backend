@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const ApplyAsDoctorValidationSchema = z.object({
+export const ApplyAsDoctorValidationZodSchema = z.object({
     user: z.object({
         name: z.string({ error: "Name is required" })
             .min(2, "Name must be at least 2 characters")

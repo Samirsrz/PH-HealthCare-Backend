@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doctor Application Rejected</title>
+</head>
+
+<body style="margin: 0; padding: 0; background-color: #f4f6f8; font-family: Arial, sans-serif;">
+  <div style="max-width: 600px; margin: 40px auto; background: #ffffff; border-radius: 10px; padding: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+    
+    <h2 style="color: #d32f2f; margin-bottom: 20px;">
+      Doctor Application Update
+    </h2>
+
+    <p style="font-size: 16px; color: #333;">
+      Dear <strong><%= name %></strong>,
+    </p>
+
+    <p style="font-size: 16px; line-height: 1.6; color: #555;">
+      Thank you for your interest in joining our platform as a doctor.
+      Unfortunately, your application has been
+      <strong style="color: #d32f2f;">rejected</strong> at this time.
+    </p>
+
+    <div style="background-color: #fff3f3; border-left: 4px solid #d32f2f; padding: 15px; margin: 20px 0;">
+      <p style="margin: 0 0 8px; font-weight: bold; color: #333;">
+        Reason:
+      </p>
+      <p style="margin: 0; color: #555; line-height: 1.5;">
+        <%= reason || "No specific reason was provided." %>
+      </p>
+    </div>
+
+    <p style="font-size: 16px; line-height: 1.6; color: #555;">
+      We appreciate your time and interest in our platform.
+    </p>
+
+    <p style="margin-top: 30px; color: #333;">
+      Best regards,<br />
+      <strong>Healthcare Team</strong>
+    </p>
+
+  </div>
+</body>
+</html>
