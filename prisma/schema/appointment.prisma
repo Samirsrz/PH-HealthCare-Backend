@@ -1,9 +1,9 @@
 model Appointment {
   id     String            @id @default(uuid())
   status AppointmentStatus @default(PENDING)
-  joiningTime DateTime
+  joiningTime DateTime?
   
-  serialNumber Int
+  serialNumber Int?
 
   recordUrl String?
   recordPublicId String?
