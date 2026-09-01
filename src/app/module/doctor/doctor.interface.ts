@@ -30,3 +30,10 @@ export interface IVerifyDoctorEmailPayload{
       email:string,
       otp:string
 }
+
+export interface IUpdateDoctorProfilePayload{
+    address ?:string;
+    bio ?: string;
+    consultationFee?: number;
+    contactNumber?: string
+}
